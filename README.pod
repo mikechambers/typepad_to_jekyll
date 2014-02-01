@@ -1,5 +1,21 @@
 =head1 typepad_to_jekyll
 
+=head2 Fork Info
+
+This is a forked version of the typepad_to_jekyll project.
+
+It includes the following changes
+
+* Generated post files are created with .markdown extension instead of .html
+* Generate posts are converted to markdown instead of plain html
+* The ":" character is properly escaped within titles.
+* date field is generated and inserted into each posts YAML header
+
+It requires the following perl modules to run:
+
+* [HTML::WikiConverter](http://search.cpan.org/~diberri/HTML-WikiConverter-0.68/lib/HTML/WikiConverter.pm)
+* [HTML::WikiConverter:Markdown](http://search.cpan.org/~diberri/HTML-WikiConverter-Markdown-0.05/lib/HTML/WikiConverter/Markdown.pm)
+
 =head2 What is this stuff ?
 
 I was in the process of migrating my blog from L<typepad.com> to

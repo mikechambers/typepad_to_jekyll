@@ -58,7 +58,7 @@ while (<$input>) {
             $clean_title =~ s/^-+//g;
             my ($m, $d, $y) = $date =~ m|^(\d{1,2})/(\d{1,2})/(\d{4})|
               or warn "failed to parse date '$date' (post title : '$title')", next;
-            my $file_name = $directory . '/' . "$y-$m-$d-" . $clean_title . '.html';
+            my $file_name = $directory . '/' . "$y-$m-$d-" . $clean_title . '.markdown';
             open my $output, '>', $file_name
               or warn "failed to open file '$file_name' post title : '$title')", next;
             binmode $output, ':encoding(UTF-8)';
@@ -67,15 +67,22 @@ while (<$input>) {
             @categories > 1 and $categories = "categories:\n";
             $categories .= join('', map { "  - $_\n" } @categories);
             my $published = ( $status eq 'Publish' ? 1 : 0);
+			my $publish_date = "$y-$m-$d 12:36:01 -0800";
+			$title =~ s/:/&#58;/g;
             my $header = 
               "---\n"
             . "layout: post\n"
             . "title: $title\n"
             . "published: $published\n"
+            . "date: $publish_date\n"
             . $categories
             . "---\n";
             print $output $header;
-            print $output $body;
+
+			use HTML::WikiConverter;
+			my $wc = new HTML::WikiConverter( dialect => 'Markdown' );
+
+            print $output $wc->html2wiki( $body );
             $body = '';
             $author = '';
             $title = '';
